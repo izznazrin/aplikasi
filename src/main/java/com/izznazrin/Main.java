@@ -1,5 +1,8 @@
 package com.izznazrin;
 
+import java.util.List;
+
+import org.springframework.beans.factory.config.ListFactoryBean;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,8 +17,20 @@ public class Main {
 
     @GetMapping("/test")
     public GreetResponse greet() {
-        return new GreetResponse("hell");
+        GreetResponse response = new GreetResponse(
+            "hell",
+            List.of("Java", "JavaScript"),
+            new Person("Alex", 28, 30000)
+        );
+        return response;
     }
 
-    record GreetResponse(String greet) {}
+    record Person(String name, int age, double savings) {
+    }
+
+    record GreetResponse(
+            String greet,
+            List<String> favProgrammingLanguages,
+            Person person) {
+    }
 }

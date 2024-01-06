@@ -1,12 +1,14 @@
-service:
+version: '3'
+
+services:
   db:
     container_name: postgres
     image: postgres
     environment:
-      POSTGRES_USER: amigoscode
+      POSTGRES_USER: izznazrin
       POSTGRES_PASSWORD: password
       PGDATA: /data/postgres
-    volume:
+    volumes:
       - db:/data/postgres
     ports:
       - "5332:5432"

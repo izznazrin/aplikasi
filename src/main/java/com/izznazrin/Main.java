@@ -5,8 +5,12 @@ import java.util.List;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 
 @SpringBootApplication
@@ -29,22 +33,23 @@ public class Main {
         return customerRepository.findAll();
     }
 
-    // @GetMapping("/test")
-    // public GreetResponse greet() {
-    //     GreetResponse response = new GreetResponse(
-    //         "hell",
-    //         List.of("Java", "JavaScript"),
-    //         new Person("Alex", 28, 30000)
-    //     );
-    //     return response;
-    // }
+    record NewCustomerRequest(
+            String name,
+            String email,
+            Integer age) {
+    }
 
-    // record Person(String name, int age, double savings) {
-    // }
+    @PostMapping
+    public void addCUstomer(@RequestBody NewCustomerRequest request) {
+        Customer customer = new Customer();
+        customer.setName(request.name());
+        customer.setEmail(request.email());
+        customer.setAge(request.age());
+        customerRepository.save(customer);
+    }
 
-    // record GreetResponse(
-    //         String greet,
-    //         List<String> favProgrammingLanguages,
-    //         Person person) {
-    // }
+    @DeleteMapping("{customerId}")
+    public void deleteCustomer(@PathVariable("customerId") Integer id) {
+        customerRepository.deleteById(id);
+    }
 }
